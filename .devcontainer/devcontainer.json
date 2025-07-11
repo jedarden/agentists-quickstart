@@ -1,23 +1,21 @@
 {
-  "name": "Basic Development DevPod",
-  "image": "mcr.microsoft.com/devcontainers/base:debian",
-  "runArgs": [
-    "--privileged"
-  ],
-  "remoteUser": "vscode",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/node:1": {}
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "rooveterinaryinc.roo-cline",
-        "vsls-contrib.gistfs",
-        "github.copilot",
-        "github.copilot-chat"
-      ]
-    }
-  },
-  "shutdownAction": "none"
+	"name": "Security-Focused DevPod",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"bierner.markdown-mermaid",
+				"shd101wyy.markdown-preview-enhanced"
+			]
+		}
+	},
+	"forwardPorts": [8282],
+	"portsAttributes": {
+		"8282": {
+			"label": "Hello Remote World",
+			"onAutoForward": "notify"
+		}
+	},
+	"postCreateCommand": "npm install -g npm@latest && yarn install"
 }

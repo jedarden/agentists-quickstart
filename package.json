@@ -1,0 +1,15 @@
+{
+  "name": "security-devpod-workspace",
+  "version": "1.0.0",
+  "description": "Security-focused development workspace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": ["security", "devpod", "workspace"],
+  "author": "Agentists Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
