@@ -5,7 +5,7 @@ This branch contains a ready-to-use development environment with Docker-in-Docke
 ## 🚀 Quick Start with devpod.sh
 
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch basic-devpod
+devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/basic
 ```
 
 ## 📦 What's Included
@@ -29,7 +29,8 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch basic-devpod
 - Runs with privileged access to support Docker operations
 - Configured for the `vscode` user
 - Persistent container (won't shutdown on disconnect)
-- Automatic tool installation with graceful fallback (attempts non-sudo, then sudo, then continues without if both fail)
+- Automatic tool installation with graceful fallback and detailed installation report
+- Installation report saved to `.devcontainer/installation-report.md` for troubleshooting
 
 ## 📋 Requirements
 
@@ -41,7 +42,7 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch basic-devpod
 
 If you prefer to use VS Code directly:
 
-1. Clone this branch: `git clone -b basic-devpod https://github.com/jedarden/agentists-quickstart`
+1. Clone this branch: `git clone -b workspace/basic https://github.com/jedarden/agentists-quickstart`
 2. Open in VS Code
 3. Install the Dev Containers extension
 4. Click "Reopen in Container" when prompted

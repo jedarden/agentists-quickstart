@@ -257,3 +257,6 @@ echo "*Report generated at: $(date)*" >> "$REPORT_FILE"
 
 echo "Tool installation script completed"
 echo "Installation report saved to: $REPORT_FILE"
+echo ""
+echo "📋 To view the installation report, run:"
+echo "    cat .devcontainer/installation-report.md"
