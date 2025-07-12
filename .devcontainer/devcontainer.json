@@ -17,5 +17,5 @@
 			"onAutoForward": "notify"
 		}
 	},
-	"postCreateCommand": "npm install -g npm@latest && yarn install"
+	"postCreateCommand": "bash .devcontainer/install-tools.sh && npm install -g npm@latest && yarn install"
 }
