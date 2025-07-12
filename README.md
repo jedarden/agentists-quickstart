@@ -13,6 +13,11 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch basic-devpod
 - **🖼️ Base Image**: Debian-based development container
 - **🐳 Docker-in-Docker**: Build and run containers within your development environment
 - **🟢 Node.js**: Full Node.js development environment
+- **🐍 Python**: Python development environment
+- **🛠️ Development Tools** (auto-installed on container creation):
+  - tmux: Terminal multiplexer for managing multiple sessions
+  - claude-code: Anthropic's official CLI for Claude
+  - GitHub CLI (gh): Command-line interface for GitHub
 - **🧬 VS Code Extensions**:
   - Roo Cline: AI-powered coding assistant
   - GistFS: Access GitHub Gists directly in VS Code
@@ -24,6 +29,7 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch basic-devpod
 - Runs with privileged access to support Docker operations
 - Configured for the `vscode` user
 - Persistent container (won't shutdown on disconnect)
+- Automatic tool installation with graceful fallback (attempts non-sudo, then sudo, then continues without if both fail)
 
 ## 📋 Requirements
 
