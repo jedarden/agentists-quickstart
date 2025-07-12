@@ -21,5 +21,6 @@
     }
   },
   "postCreateCommand": "bash .devcontainer/install-tools.sh",
+  "postStartCommand": "code --preview ${containerWorkspaceFolder}/.devcontainer/installation-report.md",
   "shutdownAction": "none"
 }
