@@ -86,26 +86,26 @@ fi
 
 # Install claude-code
 if ! command_exists claude-code; then
-    echo "Installing claude-code..."
-    
-    # Download and install claude-code
-    INSTALL_CMD="curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | sh"
-    
-    # Try without sudo first
-    if eval "$INSTALL_CMD" 2>/dev/null; then
-        echo "claude-code installed successfully"
-    else
-        # Try with sudo if available
-        if command_exists sudo; then
+    # Check for Node.js and npm first
+    if command_exists node && command_exists npm; then
+        echo "Installing claude-code via npm..."
+        
+        # Try npm install without sudo first
+        if npm install -g @anthropic-ai/claude-code 2>/dev/null; then
+            echo "claude-code installed successfully via npm without sudo"
+        elif command_exists sudo; then
             echo "Retrying claude-code installation with sudo..."
-            if sudo sh -c "$INSTALL_CMD" 2>/dev/null; then
-                echo "claude-code installed successfully with sudo"
+            if sudo npm install -g @anthropic-ai/claude-code 2>/dev/null; then
+                echo "claude-code installed successfully via npm with sudo"
             else
-                echo "Failed to install claude-code - continuing without it"
+                echo "Failed to install claude-code via npm - continuing without it"
             fi
         else
-            echo "Failed to install claude-code - continuing without it"
+            echo "Failed to install claude-code via npm - continuing without it"
         fi
+    else
+        echo "Node.js and npm are required to install claude-code but were not found"
+        echo "Continuing without claude-code installation"
     fi
 else
     echo "claude-code is already installed"
