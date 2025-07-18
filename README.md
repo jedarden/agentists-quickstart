@@ -19,6 +19,8 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/se
 - **🧬 VS Code Extensions**:
   - Markdown Mermaid: Create diagrams in Markdown
   - Markdown Preview Enhanced: Advanced Markdown preview features
+  - Claude Code: Anthropic's official VS Code extension for Claude
+  - Claude Code Extension: Enhanced Claude Code cost tracking and features
 
 ## ✨ Features
 
