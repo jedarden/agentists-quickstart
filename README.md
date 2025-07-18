@@ -23,6 +23,8 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/ba
   - GistFS: Access GitHub Gists directly in VS Code
   - GitHub Copilot: AI pair programming
   - GitHub Copilot Chat: Conversational AI assistance
+  - Claude Code: Anthropic's official VS Code extension for Claude
+  - Claude Code Extension: Enhanced Claude Code cost tracking and features
 
 ## ✨ Features
 
