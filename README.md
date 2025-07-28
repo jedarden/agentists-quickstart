@@ -35,12 +35,38 @@ devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/ba
 - Persistent container (won't shutdown on disconnect)
 - Automatic tool installation with graceful fallback and detailed installation report
 - Installation report saved to `.devcontainer/installation-report.md` for troubleshooting
+- If automatic installation fails during container startup, run manually: `bash .devcontainer/install-tools.sh`
 
 ## 📋 Requirements
 
 - [DevPod CLI](https://devpod.sh/docs/getting-started/install)
 - Docker Desktop or Docker Engine
 - Active GitHub Copilot subscription (for Copilot features)
+
+## 🛠️ Tool Installation
+
+The development tools are automatically installed when the container starts via `.devcontainer/install-tools.sh`. However, this automatic installation may occasionally fail due to timing or permission issues during container initialization.
+
+### Manual Installation
+
+If any tools fail to install automatically, you can run the installation script manually:
+
+```bash
+bash .devcontainer/install-tools.sh
+```
+
+This will:
+- Attempt to install all missing tools
+- Generate a detailed report at `.devcontainer/installation-report.md`
+- Provide manual installation instructions for any tools that fail
+
+### Viewing Installation Status
+
+To check which tools were successfully installed:
+
+```bash
+cat .devcontainer/installation-report.md
+```
 
 ## 🔧 Manual VS Code Usage
 
