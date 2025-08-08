@@ -6,14 +6,30 @@ Welcome to the Agentists Quick Start repository - your opinionated guide to gett
 
 Launch a ready-to-use workspace in seconds using [DevPod](https://devpod.sh/):
 
+**Motivation**
+* Share your set up across CodeSpaces and/or your HomeLab
+This includes:
+* Favored VS Code extensions
+* Shared secrets (e.g. Claude API Key e.g. ANTHROPIC_API_KEY) from an external provider such as Github Codespaces Secrets or 1password
+
+**Install DevPod in a Code space**
+* Clone this repo
+* Create a codespace from it
+* Install DevPod
+```
+  curl -L -o devpod "https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64" && sudo install -c -m 0755 devpod /usr/local/bin && rm -f devpod
+```
+
+
+
 **Basic Development Environment:**
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/basic
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/basic
 ```
 
 **Security-Focused Environment:**
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/security
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/security
 ```
 
 ## 🧠 What is Agentic Engineering?
