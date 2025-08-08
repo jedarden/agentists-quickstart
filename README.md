@@ -8,12 +8,12 @@ Launch a ready-to-use workspace in seconds using [DevPod](https://devpod.sh/):
 
 **Basic Development Environment:**
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/basic
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/basic
 ```
 
 **Security-Focused Environment:**
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/security
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/security
 ```
 
 ## 🧠 What is Agentic Engineering?
@@ -105,8 +105,8 @@ DevPods are our implementation of containerized development environments. Each D
 
 | DevPod | Branch | Use Case | Launch Command |
 |--------|--------|----------|----------------|
-| Basic Development | `workspace/basic` | General development with Docker-in-Docker | `devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/basic` |
-| Security-Focused | `workspace/security` | Security research and Node.js development | `devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/security` |
+| Basic Development | `workspace/basic` | General development with Docker-in-Docker | `devpod up https://github.com/jedarden/agentists-quickstart@workspace/basic` |
+| Security-Focused | `workspace/security` | Security research and Node.js development | `devpod up https://github.com/jedarden/agentists-quickstart@workspace/security` |
 
 **Benefits:**
 - 🚀 Instant workspace setup
