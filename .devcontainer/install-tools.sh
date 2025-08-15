@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Configure Git safe directories first (Fix for Issue #10)
+echo "🔧 Configuring Git safe directories..."
+git config --global --add safe.directory '*' 2>/dev/null || true
+git config --global --add safe.directory /workspaces 2>/dev/null || true
+git config --global --add safe.directory /workspaces/* 2>/dev/null || true
+git config --global --add safe.directory /workspace 2>/dev/null || true
+echo "✅ Git safe directories configured"
+
 # Initialize report file
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPORT_FILE="$SCRIPT_DIR/installation-report.md"
@@ -55,9 +63,37 @@ try_install() {
     return 1
 }
 
-# Install tmux
+# Platform detection (Fix for Issue #9)
+detect_platform() {
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || grep -qi microsoft /proc/version 2>/dev/null; then
+        echo "windows"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "macos"
+    else
+        echo "linux"
+    fi
+}
+
+PLATFORM=$(detect_platform)
+
+# Install tmux (with Windows detection for Issue #9)
 echo "### 🖥️ Tmux Installation" >> "$REPORT_FILE"
-if ! command_exists tmux; then
+if [ "$PLATFORM" == "windows" ]; then
+    echo "Windows environment detected - skipping tmux installation"
+    record_status "tmux" "⚠️ Skipped" "Not recommended on Windows - use Windows Terminal tabs instead"
+    
+    # Create Windows Terminal profile as alternative
+    cat > ~/.windows-terminal-profile.json << 'EOF'
+{
+    "name": "DevContainer",
+    "commandline": "docker exec -it ${CONTAINER_ID} /bin/bash",
+    "icon": "ms-appx:///ProfileIcons/{61c54bbd-c2c6-5271-96e7-009a87ff44bf}.png",
+    "colorScheme": "Campbell",
+    "startingDirectory": "/workspaces"
+}
+EOF
+    echo "Windows Terminal profile created at ~/.windows-terminal-profile.json"
+elif ! command_exists tmux; then
     if command_exists apt-get; then
         if try_install "tmux" "apt-get install -y tmux"; then
             record_status "tmux" "✅ Success" "Installed via apt-get"

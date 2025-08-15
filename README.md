@@ -2,10 +2,14 @@
 
 This branch contains a ready-to-use development environment with Docker-in-Docker and Node.js support.
 
-## 🚀 Quick Start with devpod.sh
+## 🚀 Quick Start with DevPod
 
 ```bash
-devpod up https://github.com/jedarden/agentists-quickstart --branch workspace/basic
+# Correct syntax using @ notation (Fix for Issue #5)
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/basic
+
+# Alternative: Using git URL fragment
+devpod up https://github.com/jedarden/agentists-quickstart.git#workspace/basic
 ```
 
 ## 📦 What's Included
