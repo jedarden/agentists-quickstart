@@ -4,6 +4,8 @@
 
 set -e
 
+
+
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -73,7 +75,7 @@ echo ""
 echo "📝 Testing Git Configuration (Issue #10)..."
 run_test "Git is installed" "command -v git"
 run_test "Git safe.directory is configured" "git config --global --get-all safe.directory | grep -q '*'"
-run_test "Git can access workspace" "cd /workspaces && git status"
+run_test "Git can access workspace" "(cd /workspaces && git status)"
 echo ""
 
 # Test 2: Line endings in shell scripts (Issue #6)
