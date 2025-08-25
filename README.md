@@ -1,16 +1,31 @@
-# 💡 Basic Development DevPod
+# 🔋 Batteries-Included Development DevPod
 
-This branch contains a ready-to-use development environment with Docker-in-Docker and Node.js support.
+This branch contains a **fully-loaded** development environment with Docker-in-Docker, Node.js, Claude Flow, AI Swarm orchestration, and automatic Claude Code launch capabilities.
 
 ## 🚀 Quick Start with DevPod
 
 ```bash
-# Correct syntax using @ notation (Fix for Issue #5)
-devpod up https://github.com/jedarden/agentists-quickstart@workspace/basic
+# Launch the batteries-included environment
+devpod up https://github.com/jedarden/agentists-quickstart@workspace/batteries-included
 
 # Alternative: Using git URL fragment
-devpod up https://github.com/jedarden/agentists-quickstart.git#workspace/basic
+devpod up https://github.com/jedarden/agentists-quickstart.git#workspace/batteries-included
 ```
+
+## ⚡ One-Command Launch
+
+After the DevPod starts, simply run:
+
+```bash
+./start.sh
+```
+
+This will:
+- ✅ Check and install all prerequisites
+- 🌊 Initialize claude-flow (with optional --force flag)
+- 🖥️ Create a tmux session with phonetic naming (alpha, bravo, charlie...)
+- 🚀 Launch Claude Code with proper MCP configuration
+- 📊 Provide session management commands
 
 ## 📦 What's Included
 
@@ -24,6 +39,9 @@ devpod up https://github.com/jedarden/agentists-quickstart.git#workspace/basic
   - GitHub CLI (gh): Command-line interface for GitHub
   - UV: Fast Python package manager written in Rust
   - claude-monitor: Monitor and track Claude API usage
+  - **🌊 claude-flow@alpha**: AI swarm orchestration and SPARC methodology
+  - **🐝 ruv-swarm**: Distributed AI agent coordination
+  - **📈 ccusage**: Claude Code usage tracking and analytics
 - **🧬 VS Code Extensions**:
   - Roo Cline: AI-powered coding assistant
   - GistFS: Access GitHub Gists directly in VS Code
@@ -47,9 +65,41 @@ devpod up https://github.com/jedarden/agentists-quickstart.git#workspace/basic
 - Docker Desktop or Docker Engine
 - Active GitHub Copilot subscription (for Copilot features)
 
+## 🎯 Using the Start Script
+
+The `start.sh` script provides an interactive, batteries-included launch experience:
+
+### Features:
+- **Prerequisite Checking**: Automatically verifies all required tools are installed
+- **Interactive Initialization**: Choose between force initialization, normal initialization, or skip
+- **Smart Session Management**: Uses phonetic alphabet naming (alpha, bravo, charlie...) to avoid conflicts
+- **MCP Configuration Detection**: Automatically detects and uses `.mcp.json` if present
+- **Graceful Error Handling**: Provides helpful troubleshooting tips if something goes wrong
+- **Tmux Integration**: Launches Claude Code in a detached tmux session for persistence
+
+### Usage:
+```bash
+# Run the start script
+./start.sh
+
+# Choose initialization option when prompted:
+# [y] - Force reinitialize (overwrites existing config)
+# [n] - Normal initialization (preserves existing config)  
+# [s] - Skip initialization
+
+# Choose whether to attach to the tmux session immediately or later
+```
+
+### Tmux Commands:
+Once launched, use these commands to manage your session:
+- **Attach to session**: `tmux attach -t [session-name]`
+- **Detach from session**: `Ctrl+b`, then `d`
+- **List all sessions**: `tmux ls`
+- **Kill a session**: `tmux kill-session -t [session-name]`
+
 ## 🛠️ Tool Installation
 
-The development tools are automatically installed when the container starts via `.devcontainer/install-tools.sh`. However, this automatic installation may occasionally fail due to timing or permission issues during container initialization.
+The development tools are automatically installed when the container starts via `.devcontainer/install-tools.sh`. The enhanced script now includes claude-flow, ruv-swarm, and ccusage with intelligent detection to skip already-installed components.
 
 ### Manual Installation
 

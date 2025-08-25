@@ -317,6 +317,87 @@ else
     record_status "claude-monitor" "❌ Failed" "UV not available - install UV first"
 fi
 
+# Install claude-flow@alpha
+echo "### 🌊 Claude Flow Installation" >> "$REPORT_FILE"
+if command_exists npm; then
+    # Check if claude-flow is already installed
+    if npm list -g claude-flow 2>/dev/null | grep -q "claude-flow@"; then
+        FLOW_VERSION=$(npm list -g claude-flow 2>/dev/null | grep "claude-flow@" | grep -oE '@[0-9a-z.-]+' || echo 'unknown')
+        record_status "claude-flow" "✅ Already Installed" "Version: $FLOW_VERSION"
+        echo "claude-flow is already installed"
+    else
+        echo "Installing claude-flow@alpha via npm..."
+        if npm install -g claude-flow@alpha 2>/dev/null; then
+            record_status "claude-flow" "✅ Success" "Installed via npm (alpha)"
+        elif command_exists sudo; then
+            echo "Retrying claude-flow installation with sudo..."
+            if sudo npm install -g claude-flow@alpha 2>/dev/null; then
+                record_status "claude-flow" "✅ Success" "Installed via npm with sudo (alpha)"
+            else
+                record_status "claude-flow" "❌ Failed" "npm installation failed"
+            fi
+        else
+            record_status "claude-flow" "❌ Failed" "npm installation failed without sudo"
+        fi
+    fi
+else
+    record_status "claude-flow" "❌ Failed" "npm not available - install Node.js first"
+fi
+
+# Install ruv-swarm
+echo "### 🐝 RUV Swarm Installation" >> "$REPORT_FILE"
+if command_exists npm; then
+    # Check if ruv-swarm is already installed
+    if npm list -g ruv-swarm 2>/dev/null | grep -q "ruv-swarm@"; then
+        SWARM_VERSION=$(npm list -g ruv-swarm 2>/dev/null | grep "ruv-swarm@" | grep -oE '@[0-9a-z.-]+' || echo 'unknown')
+        record_status "ruv-swarm" "✅ Already Installed" "Version: $SWARM_VERSION"
+        echo "ruv-swarm is already installed"
+    else
+        echo "Installing ruv-swarm via npm..."
+        if npm install -g ruv-swarm 2>/dev/null; then
+            record_status "ruv-swarm" "✅ Success" "Installed via npm"
+        elif command_exists sudo; then
+            echo "Retrying ruv-swarm installation with sudo..."
+            if sudo npm install -g ruv-swarm 2>/dev/null; then
+                record_status "ruv-swarm" "✅ Success" "Installed via npm with sudo"
+            else
+                record_status "ruv-swarm" "❌ Failed" "npm installation failed"
+            fi
+        else
+            record_status "ruv-swarm" "❌ Failed" "npm installation failed without sudo"
+        fi
+    fi
+else
+    record_status "ruv-swarm" "❌ Failed" "npm not available - install Node.js first"
+fi
+
+# Install ccusage
+echo "### 📈 CCUsage Installation" >> "$REPORT_FILE"
+if command_exists npm; then
+    # Check if ccusage is already installed
+    if npm list -g ccusage 2>/dev/null | grep -q "ccusage@"; then
+        CCUSAGE_VERSION=$(npm list -g ccusage 2>/dev/null | grep "ccusage@" | grep -oE '@[0-9a-z.-]+' || echo 'unknown')
+        record_status "ccusage" "✅ Already Installed" "Version: $CCUSAGE_VERSION"
+        echo "ccusage is already installed"
+    else
+        echo "Installing ccusage via npm..."
+        if npm install -g ccusage 2>/dev/null; then
+            record_status "ccusage" "✅ Success" "Installed via npm"
+        elif command_exists sudo; then
+            echo "Retrying ccusage installation with sudo..."
+            if sudo npm install -g ccusage 2>/dev/null; then
+                record_status "ccusage" "✅ Success" "Installed via npm with sudo"
+            else
+                record_status "ccusage" "❌ Failed" "npm installation failed"
+            fi
+        else
+            record_status "ccusage" "❌ Failed" "npm installation failed without sudo"
+        fi
+    fi
+else
+    record_status "ccusage" "❌ Failed" "npm not available - install Node.js first"
+fi
+
 # Write the status table to the report
 echo "| Tool | Status | Notes |" >> "$REPORT_FILE"
 echo "|------|--------|-------|" >> "$REPORT_FILE"
@@ -325,11 +406,14 @@ echo "| GitHub CLI | ${INSTALL_STATUS[gh]} | ${INSTALL_NOTES[gh]} |" >> "$REPORT
 echo "| Claude Code | ${INSTALL_STATUS[claude-code]} | ${INSTALL_NOTES[claude-code]} |" >> "$REPORT_FILE"
 echo "| UV | ${INSTALL_STATUS[uv]} | ${INSTALL_NOTES[uv]} |" >> "$REPORT_FILE"
 echo "| Claude Monitor | ${INSTALL_STATUS[claude-monitor]} | ${INSTALL_NOTES[claude-monitor]} |" >> "$REPORT_FILE"
+echo "| Claude Flow | ${INSTALL_STATUS[claude-flow]} | ${INSTALL_NOTES[claude-flow]} |" >> "$REPORT_FILE"
+echo "| RUV Swarm | ${INSTALL_STATUS[ruv-swarm]} | ${INSTALL_NOTES[ruv-swarm]} |" >> "$REPORT_FILE"
+echo "| CCUsage | ${INSTALL_STATUS[ccusage]} | ${INSTALL_NOTES[ccusage]} |" >> "$REPORT_FILE"
 echo "" >> "$REPORT_FILE"
 
 # Add manual installation instructions for failed items
 FAILED_ITEMS=0
-for tool in tmux gh claude-code uv claude-monitor; do
+for tool in tmux gh claude-code uv claude-monitor claude-flow ruv-swarm ccusage; do
     if [[ "${INSTALL_STATUS[$tool]}" == *"Failed"* ]]; then
         ((FAILED_ITEMS++))
     fi
@@ -460,6 +544,59 @@ if [ $FAILED_ITEMS -gt 0 ]; then
         echo '```' >> "$REPORT_FILE"
         echo "" >> "$REPORT_FILE"
         echo "**For more information, visit the claude-monitor documentation**" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+    fi
+    
+    if [[ "${INSTALL_STATUS[claude-flow]}" == *"Failed"* ]]; then
+        echo "### 🌊 Installing Claude Flow manually" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "Claude Flow requires Node.js and npm to be installed first." >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**Install Claude Flow (alpha version):**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "npm install -g claude-flow@alpha" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**If you get permission errors, try:**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "sudo npm install -g claude-flow@alpha" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**For more information, visit:** https://github.com/ruvnet/claude-flow" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+    fi
+    
+    if [[ "${INSTALL_STATUS[ruv-swarm]}" == *"Failed"* ]]; then
+        echo "### 🐝 Installing RUV Swarm manually" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "RUV Swarm requires Node.js and npm to be installed first." >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**Install RUV Swarm:**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "npm install -g ruv-swarm" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**If you get permission errors, try:**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "sudo npm install -g ruv-swarm" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+    fi
+    
+    if [[ "${INSTALL_STATUS[ccusage]}" == *"Failed"* ]]; then
+        echo "### 📈 Installing CCUsage manually" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "CCUsage requires Node.js and npm to be installed first." >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**Install CCUsage:**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "npm install -g ccusage" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        echo "**If you get permission errors, try:**" >> "$REPORT_FILE"
+        echo '```bash' >> "$REPORT_FILE"
+        echo "sudo npm install -g ccusage" >> "$REPORT_FILE"
+        echo '```' >> "$REPORT_FILE"
         echo "" >> "$REPORT_FILE"
     fi
 else
