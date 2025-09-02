@@ -231,8 +231,8 @@ if tmux new-session -d -s "$SESSION_NAME" "$CLAUDE_CMD" 2>/dev/null; then
     echo "  • Create new window:   ${CYAN}Ctrl+b, then c${NC}"
     echo ""
     
-    # Ask if user wants to attach immediately
-    print_message "$CYAN" "Would you like to attach to the session now? [y/N]: "
+    # Ask if user wants to attach immediately - FIXED FORMATTING
+    echo -e "${CYAN}Would you like to attach to the session now? [y/N]: ${NC}"
     read -n 1 -r
     echo ""
     
