@@ -8,6 +8,10 @@ set -euo pipefail
 
 START_SH_URL="https://raw.githubusercontent.com/jedarden/agentists-quickstart/main/start.sh"
 BIN_DIR="$HOME/.local/bin"
+# Captured before this script exports BIN_DIR onto its own PATH below — used
+# at the end to tell whether the *parent* (invoking) shell can already find
+# start.sh, since this script's own PATH changes don't propagate back to it.
+INHERITED_PATH="$PATH"
 FORCE="${BOOTSTRAP_FORCE:-0}"
 [[ "${1:-}" == "--force" ]] && FORCE=1
 
@@ -126,4 +130,15 @@ if ! grep -qF "$BASHRC_HOOK" "$HOME/.bashrc" 2>/dev/null; then
     } >>"$HOME/.bashrc"
 fi
 
-log "done. Run 'start.sh' to launch a session."
+log "done."
+case ":$INHERITED_PATH:" in
+*":$BIN_DIR:"*)
+    log "Run 'start.sh' to launch a session."
+    ;;
+*)
+    # First-ever run: ~/.local/bin didn't exist yet when this shell logged in,
+    # so ~/.profile's PATH check skipped it. It'll be picked up on next login;
+    # for right now, either of these works:
+    log "'$BIN_DIR' isn't on PATH in this shell yet. Run 'source ~/.profile' (or reconnect), then 'start.sh' works normally."
+    ;;
+esac

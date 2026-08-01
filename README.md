@@ -11,7 +11,10 @@ On a fresh **headless server** (not your laptop/desktop — see below):
 curl -fsSL https://raw.githubusercontent.com/jedarden/agentists-quickstart/main/bootstrap.sh | bash
 ```
 
-Then, any time you want to start or rejoin a session:
+The very first time, run `source ~/.profile` (or just reconnect over SSH) once — `~/.local/bin`
+didn't exist yet when this shell logged in, so it isn't on `PATH` until the next login.
+`bootstrap.sh` will tell you if this applies. After that, any time you want to start or
+rejoin a session, from any shell:
 
 ```bash
 start.sh
