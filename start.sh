@@ -4,6 +4,11 @@
 # herdr; inside a herdr-managed pane it launches claude directly.
 set -euo pipefail
 
+# Don't assume the invoking shell already sourced .profile/.bashrc — herdr-
+# spawned panes aren't guaranteed to go through a login shell chain, and
+# that's where ~/.local/bin normally gets added to PATH.
+export PATH="$HOME/.local/bin:$PATH"
+
 if [[ -n "${HERDR_ENV:-}" ]]; then
     # Already inside a herdr-managed pane (herdr sets this for every pane it
     # spawns, including the one this triggers when run from a plain terminal

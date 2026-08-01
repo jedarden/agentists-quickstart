@@ -61,13 +61,13 @@ version_lt() {
     [[ "$(printf '%s\n%s' "$1" "$2" | sort -V | head -n1)" == "$1" ]]
 }
 
-[[ -x "$HOME/.claude/local/bin/claude" ]] && export PATH="$HOME/.claude/local/bin:$PATH"
+export PATH="$BIN_DIR:$PATH"
 installed="$(get_installed_claude_version || true)"
 latest="$(get_latest_claude_version || true)"
 if [[ -z "$installed" ]]; then
     log "installing Claude Code..."
     curl -fsSL https://claude.ai/install.sh | bash
-    [[ -x "$HOME/.claude/local/bin/claude" ]] && export PATH="$HOME/.claude/local/bin:$PATH"
+    export PATH="$BIN_DIR:$PATH"
     command -v claude &>/dev/null || err "Claude Code install failed."
     log "Claude Code installed: $(get_installed_claude_version)"
 elif [[ -n "$latest" ]] && version_lt "$installed" "$latest"; then
@@ -94,13 +94,12 @@ herdr integration install claude \
 
 # --- Passwordless sudo for OOM protection (start.sh uses this to protect
 #     the herdr server process — losing it takes every pane down at once) ---
+log "granting passwordless 'choom' so start.sh can protect the herdr server from the OOM killer..."
 SUDOERS_FILE="/etc/sudoers.d/herdr-oom-protect"
-if [[ ! -f "$SUDOERS_FILE" ]]; then
-    log "granting passwordless 'choom' so start.sh can protect the herdr server from the OOM killer..."
-    CHOOM_PATH="$(command -v choom || echo /usr/bin/choom)"
-    echo "$USER ALL=(root) NOPASSWD: ${CHOOM_PATH} -n -1000 -p *" | sudo tee "$SUDOERS_FILE" >/dev/null
-    sudo chmod 440 "$SUDOERS_FILE"
-fi
+CHOOM_PATH="$(command -v choom || echo /usr/bin/choom)"
+echo "$(id -un) ALL=(root) NOPASSWD: ${CHOOM_PATH} -n -1000 -p *" | sudo tee "$SUDOERS_FILE" >/dev/null
+sudo chmod 440 "$SUDOERS_FILE"
+sudo visudo -cf "$SUDOERS_FILE" >/dev/null || err "generated sudoers rule failed validation — check $SUDOERS_FILE"
 
 # --- Install start.sh to a stable, on-PATH location ---
 mkdir -p "$BIN_DIR"
