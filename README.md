@@ -1,6 +1,6 @@
 # agentists-quickstart
 
-Turns a bare Debian/Ubuntu VPS into a working Claude Code + [herdr](https://herdr.dev)
+Turns a bare Debian/Ubuntu VPS into a working Claude Code/Codex + [herdr](https://herdr.dev)
 coding environment. Two scripts, nothing else required.
 
 ## Quick start
@@ -20,19 +20,28 @@ rejoin a session, from any shell:
 start.sh
 ```
 
+This prompts for Claude Code or Codex. To skip the selection prompt, specify the
+agent explicitly:
+
+```bash
+start.sh --agent claude
+start.sh --agent codex
+```
+
+`--claude` and `--codex` are equivalent shortcuts. The selected agent also becomes
+the default for new Herdr panes.
+
 ## What each script does
 
-- **`bootstrap.sh`** — one-time setup. Installs Claude Code, installs herdr, wires up
-  herdr's Claude Code integration, and sets up `start.sh` + a passwordless-sudo rule it
+- **`bootstrap.sh`** — one-time setup. Installs Claude Code, Codex, and herdr, wires up
+  both Herdr agent integrations, and sets up `start.sh` + a passwordless-sudo rule it
   needs for OOM protection. Safe to re-run — every step is idempotent.
-- **`start.sh`** — launches a session. Run from a plain terminal, it launches/attaches
-  herdr and a Claude Code instance runs inside it automatically. Run from inside a
-  herdr-managed pane (which is how it ends up re-invoked automatically), it just runs
-  `claude` directly.
+- **`start.sh`** — selects an agent and launches a session. Run from a plain terminal,
+  it launches/attaches Herdr and the selected agent runs inside it automatically.
 
 ## Not for your personal computer
 
-`bootstrap.sh` runs `claude --dangerously-skip-permissions` sessions by default. That's
+`bootstrap.sh` runs the agents with their approval and sandbox checks bypassed. That's
 fine on a dedicated VPS; it's not something you want on a machine with your own files,
 browser sessions, or SSH keys on it. `bootstrap.sh` checks for signs it's running on a
 laptop/desktop (chassis type, battery, an active display) and asks for explicit

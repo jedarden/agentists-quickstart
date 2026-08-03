@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # bootstrap.sh — one-time setup: turns a bare Debian/Ubuntu VPS into a
-# Claude Code + herdr coding environment. Safe to re-run (idempotent).
+# Claude Code/Codex + herdr coding environment. Safe to re-run (idempotent).
 #
 #   curl -fsSL https://raw.githubusercontent.com/jedarden/agentists-quickstart/main/bootstrap.sh | bash
 #
@@ -50,7 +50,7 @@ command -v apt-get &>/dev/null || err "apt-get not found — only Debian/Ubuntu 
 # --- Baseline packages ---
 log "installing baseline packages..."
 sudo apt-get update -qq
-sudo apt-get install -y -qq git curl ca-certificates
+sudo apt-get install -y -qq git curl ca-certificates nodejs npm
 
 # --- Claude Code CLI ---
 get_installed_claude_version() {
@@ -81,6 +81,12 @@ else
     log "Claude Code up to date ($installed)."
 fi
 
+# --- Codex CLI ---
+log "installing/updating Codex CLI..."
+npm install -g --prefix "$HOME/.local" @openai/codex@latest
+command -v codex &>/dev/null || err "Codex CLI install failed."
+log "Codex CLI ready ($(codex --version 2>&1))."
+
 # --- herdr ---
 if ! command -v herdr &>/dev/null; then
     log "installing herdr..."
@@ -95,6 +101,9 @@ fi
 log "wiring herdr's Claude Code integration..."
 herdr integration install claude \
     || log "warning: 'herdr integration install claude' failed — start.sh still works, session-identity persistence won't."
+log "wiring herdr's Codex integration..."
+herdr integration install codex \
+    || log "warning: 'herdr integration install codex' failed — start.sh still works, session-identity persistence won't."
 
 # --- Passwordless sudo for OOM protection (start.sh uses this to protect
 #     the herdr server process — losing it takes every pane down at once) ---
@@ -114,18 +123,17 @@ else
 fi
 chmod +x "$BIN_DIR/start.sh"
 
-# --- Auto-launch claude in every pane herdr creates ---
+# --- Auto-launch the selected agent in every pane herdr creates ---
 # herdr sets HERDR_ENV (+ HERDR_PANE_ID/HERDR_TAB_ID/HERDR_WORKSPACE_ID) in
 # every pane it spawns. This hook makes each new pane immediately hand off to
-# start.sh, which sees HERDR_ENV set and execs claude directly — so running
-# `start.sh` in a plain terminal (which launches herdr) results in claude
-# actually running, without any separate pane-orchestration logic needed.
+# start.sh, which reads the selection made before herdr launched and execs the
+# selected agent directly.
 BASHRC_HOOK='[[ -n "$HERDR_ENV" ]] && [[ $- == *i* ]] && exec "$HOME/.local/bin/start.sh"'
 if ! grep -qF "$BASHRC_HOOK" "$HOME/.bashrc" 2>/dev/null; then
     log "adding herdr auto-launch hook to ~/.bashrc..."
     {
         echo ""
-        echo "# agentists-quickstart: auto-launch claude in herdr-spawned panes"
+        echo "# agentists-quickstart: auto-launch selected agent in herdr-spawned panes"
         echo "$BASHRC_HOOK"
     } >>"$HOME/.bashrc"
 fi
