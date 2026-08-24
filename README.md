@@ -51,3 +51,9 @@ confirmation before proceeding if so.
 
 - A Debian or Ubuntu VPS (apt-based — other distros aren't supported yet)
 - A user with sudo access
+
+---
+
+Part of [jedarden.com](https://jedarden.com) · Read the write-up: [jedarden.com/guides/workflow/](https://jedarden.com/guides/workflow/)
+
+*This GitHub repo is a read-only mirror of git.ardenone.com/jedarden/agentists-quickstart — issues and PRs are welcome here either way.*
